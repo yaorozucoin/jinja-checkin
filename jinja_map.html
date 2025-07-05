@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>神社チェックインマップ</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+    #map { height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+  <script>
+    const map = L.map('map').setView([34.665869, 135.460125], 16); // 三社神社の座標
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © OpenStreetMap contributors',
+    }).addTo(map);
+
+    // 三社神社ピン
+    const jinjaMarker = L.marker([34.665869, 135.460125]).addTo(map);
+    jinjaMarker.bindPopup("三社神社");
+
+    // 現在地取得
+    map.locate({ setView: true, maxZoom: 16 });
+
+    function onLocationFound(e) {
+      const radius = e.accuracy;
+      L.marker(e.latlng).addTo(map)
+        .bindPopup("あなたの現在地").openPopup();
+      L.circle(e.latlng, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+      alert("位置情報が取得できませんでした：" + e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+  </script>
+</body>
+</html>
