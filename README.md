@@ -46,3 +46,22 @@
   </script>
 </body>
 </html>
+<script>
+  // ユーザーに位置情報の許可を求める
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      // 地図上に現在地をマーカー表示（例）
+      const marker = L.marker([lat, lng]).addTo(map);
+      marker.bindPopup("あなたの現在地").openPopup();
+
+      // 地図の中心に移動
+      map.setView([lat, lng], 15);
+    },
+    function (error) {
+      alert("位置情報の取得に失敗しました：" + error.message);
+    }
+  );
+</script>
